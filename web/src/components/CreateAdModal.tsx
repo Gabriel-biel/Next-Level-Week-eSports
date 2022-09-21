@@ -1,6 +1,7 @@
 import * as Checkbox from "@radix-ui/react-checkbox";
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import * as Dialog from "@radix-ui/react-dialog";
+import * as Select from '@radix-ui/react-select';
 
 
 import { Check, GameController } from "phosphor-react";
@@ -35,7 +36,7 @@ export function CreateAdModal() {
     try {
       await axios.post(`http://localhost:3333/game/${data.game}/ads`, {
       name: data.name,
-      yearsPlayning: Number(data.yaersPlayning),
+      yearsPlayning: Number(data.yearsPlayning),
       discord: data.discord,
       weekDays: weekDays.map(Number),
       hoursStart: data.hoursStart,
@@ -60,17 +61,36 @@ export function CreateAdModal() {
                   <form onSubmit={handleCreatedAd} className='mt-8 flex flex-col gap-4'>
                     <div className='flex flex-col gap-2'>
                       <label htmlFor="game" className='font-semibold'>Qual o Game?</label>
-                      <select
-                        id="game"
-                        name='game' 
-                        className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 appearance-none"
-                        defaultValue='' 
-                      >
-                        <option disabled value="">Selecione o game que deseja jogar</option>
-                        {games.map(game => {
-                          return <option key={game.id} value={game.id}>{game.title}</option>
-                        })}
-                      </select>
+                      <Select.Root>
+                        <Select.Trigger
+                            id="game"
+                            name='game' 
+                            className="inline-flex bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500"
+                            defaultValue=''
+                        >
+                          <Select.Value placeholder='Selecione o game que deseja jogar' />
+
+                          </Select.Trigger>
+                          <Select.Portal>
+                            <Select.Content>
+                              <Select.Viewport className="rounded-md">
+                              {games.map(game => {
+                                return (
+                                  <Select.Item 
+                                    key={game.id} 
+                                    value={game.id} 
+                                    className="flex justify-center items-center bg-zinc-900 py-3 px-4 text-sm text-white placeholder:text-zinc-500 cursor-pointer hover:bg-violet-500"
+                                  >
+                                    <Select.ItemText>
+                                      {game.title}
+                                    </Select.ItemText>
+                                  </Select.Item>
+                                )
+                              })} 
+                              </Select.Viewport>
+                            </Select.Content>
+                          </Select.Portal>
+                      </Select.Root>
                     </div>
 
                     <div className='flex flex-col gap-2'>
@@ -80,8 +100,8 @@ export function CreateAdModal() {
 
                     <div className='grid grid-cols-2 gap-6'>
                       <div className='flex flex-col gap-2'>
-                        <label htmlFor="yaersPlayning">Joga a quantos Anos?</label>
-                        <Input name='yaersPlayning' id='yaersPlayning' type="number" placeholder='Tudo bem ser 0'/>
+                        <label htmlFor="yearsPlayning">Joga a quantos Anos?</label>
+                        <Input name='yearsPlayning' id='yearsPlayning' type="number" min={0} placeholder='Tudo bem ser 0' className="appearance-none"/>
                       </div>
                       <div className='flex flex-col gap-2'>
                         <label htmlFor="discord">Qual o seu Discord?</label>
@@ -92,11 +112,12 @@ export function CreateAdModal() {
                     <div className='flex gap-6'>
                       <div className='flex flex-col gap-2'>
                         <label htmlFor="weekDays">Quando Costuma Jogar?</label>
-                        <div className='flex gap-1'>
+                        <div>
                           <ToggleGroup.Root
                             onValueChange={setWeekDays}
                             value={weekDays} 
                             type="multiple"
+                            className="flex gap-1"
                             >
 
                             <ToggleGroup.Item

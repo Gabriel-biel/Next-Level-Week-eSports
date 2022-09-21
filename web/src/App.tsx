@@ -28,7 +28,7 @@ export function App() {
   }, []);
 
   return (
-      <div className="max-w-[1344px] mx-auto flex flex-col items-center my-8">
+      <div className="max-w-[1344px] mx-auto flex flex-col items-center my-2 px-6">
         <img src={logoImg} alt="logoImg"/>
         <h1 className='text-6xl text-white font-black mt-4'>Seu <span className='bg-nlw-gradient bg-clip-text text-transparent'>duo</span>Está aqui</h1>
 
