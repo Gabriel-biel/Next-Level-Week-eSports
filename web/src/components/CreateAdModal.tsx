@@ -63,10 +63,10 @@ export function CreateAdModal() {
                       <label htmlFor="game" className='font-semibold'>Qual o Game?</label>
                       <Select.Root>
                         <Select.Trigger
-                            id="game"
-                            name='game' 
-                            className="inline-flex bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500"
-                            defaultValue=''
+                          id="game"
+                          name='game' 
+                          className="inline-flex bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500"
+                          defaultValue=''
                         >
                           <Select.Value placeholder='Selecione o game que deseja jogar' />
 
