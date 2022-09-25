@@ -33,8 +33,13 @@ export function Game({name, weekDays, useVoiceChannel, yearsPlaying, hourEnd, ho
   }, [id]);
   
   return (
-    <main>
-      <GameAdsHeader id={String(id)} />
-    </main>
+    <div className="w-[1344px] mx-auto flex flex-col items-center my-20 px-8 gap-12">
+      <header className="flex w-full justify-between items-start p-6 bg-zinc-900/50 rounded-lg">
+        <GameAdsHeader id={String(id)} />
+        <button onClick={() => navigate(-1)}>
+          <ArrowLeft className="w-7 h-7 text-white"/>
+        </button>
+      </header>
+    </div>
   )
 }

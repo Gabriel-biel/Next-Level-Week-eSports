@@ -2,6 +2,7 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Select from '@radix-ui/react-select';
+import * as Toast from '@radix-ui/react-toast';
 
 
 import { Check, GameController } from "phosphor-react";
@@ -20,8 +21,10 @@ export function CreateAdModal() {
   const [weekDays, setWeekDays] = useState<string[]>([])
   const [useVoiceChannel, setUseVoiceChannel] = useState(false)
 
+  const [alertDataUndefined, setAlertDataUndefined] = useState(false)
+
   useEffect(() => {
-    axios('http://localhost:3333/games').then(response => setGames(response.data))
+    axios.get('http://localhost:3333/games').then(response => setGames(response.data))
   }, []);
 
   async function handleCreatedAd(event: FormEvent) {
@@ -29,8 +32,8 @@ export function CreateAdModal() {
     const formData = new FormData(event.target as HTMLFormElement)
     const data = Object.fromEntries(formData)
 
-    if(!data.name) {
-      return;
+    if(weekDays.length <= 0 || !data.name || !data.discord || !data.hoursStart || !data.hoursEnd || !data.useVoiceChannel ) {
+      return setAlertDataUndefined(true)
     }
    
     try {
@@ -203,10 +206,10 @@ export function CreateAdModal() {
                       <Dialog.Close 
                         type='button' 
                         className='bg-zinc-500 px-5 h-12 rounded-md font-semibold hover:bg-zinc-600'
-                      >
+                        >
                         Cancelar
                       </Dialog.Close>
-                      <button 
+                      <button
                         type='submit' 
                         className='bg-violet-500 px-5 h-12 rounded-md font-semibold flex items-center gap-3bg-violet-600 hover:'>
                         <GameController size={24}/>
@@ -216,6 +219,20 @@ export function CreateAdModal() {
                   </form>
 
               </Dialog.Content>
+                <Toast.Provider swipeDirection="down" duration={5000}>
+                  <Toast.Viewport className="flex w-[100vw] h-[100vh] justify-end items-end p-10">
+                    <Toast.Root
+                      open={alertDataUndefined} 
+                      onOpenChange={setAlertDataUndefined}
+                      className="flex flex-col w-1/5 h-20 justify-center items-center p-4 bg-violet-500/50 rounded-md shadow-md animate-pulse"
+                    >
+                      <Toast.Title className="text-white font-bold">Preencha todos os Campos !</Toast.Title>
+                      <Toast.Action altText="close" className="bg-green-300/50 p-2 rounded-md">
+                        <button className="text-white font-semibold">Entendi</button>
+                      </Toast.Action>
+                    </Toast.Root>
+                  </Toast.Viewport>
+                </Toast.Provider>
             </Dialog.Overlay>  
           </Dialog.Portal>
   )

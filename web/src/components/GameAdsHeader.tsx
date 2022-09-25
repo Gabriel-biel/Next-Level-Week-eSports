@@ -1,5 +1,6 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { intToString } from "../utils/IntoToString"
 
 interface IGame {
   id: string
@@ -26,17 +27,25 @@ export function GameAdsHeader({ id }: IGameAdsHeaderProps) {
     getGameForId()
   }, [id])
 
+  const viewers = useMemo(() => {
+    return intToString(game.viewers)
+  }, [game.viewers])
+
+  const followers = useMemo(() => {
+    return intToString(game.followers)
+  }, [game.followers])
+
 
   return (
-    <div>
+    <div className="flex gap-6">
       <img src={game.bannerUrl} alt="imgGame" />
       <div className="p-2">
-        <strong className="text-white">{game.title}</strong>
-        <p>
-          <strong>{game.followers}</strong> º Followers
-          <strong>{game.viewers}</strong> º Viewers
+        <strong className="block mb-2 text-4xl text-white">{game.title}</strong>
+        <p className="block text-xl text-white mb-2">
+          <strong>{followers}</strong> Followers •
+          <strong className="flex-inline ml-1"> {viewers}</strong> Viewers
         </p>
-        <p>{game.description}</p>
+        <p className="text-zinc-300 text-sm max-w-21xl">{game.description}</p>
       </div>
     </div>
   )
