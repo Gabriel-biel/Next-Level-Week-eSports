@@ -1,24 +1,26 @@
+import * as Dialog  from "@radix-ui/react-dialog";
 import axios from "axios";
 import { ArrowLeft } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
+import { Ad } from "./components/Ad";
 import { GameAdsHeader } from "./components/GameAdsHeader";
 
-interface IAdsProps {
+export interface IAd {
   id: string
   name: string
   weekDays: string[]
   useVoiceChannel: boolean
-  yearsPlaying: number
+  yearsPlayning: number
   hourStart: string
   hourEnd: string
 }
 
-export function Game({name, weekDays, useVoiceChannel, yearsPlaying, hourEnd, hourStart}: IAdsProps) {
+export function Game() {
   // Buscar o game pelo id,
   // Exibir infos em tela
   
-  const [ads, setAds] = useState<IAdsProps[]>([])
+  const [ads, setAds] = useState<IAd[]>([])
   
   // Pegar o id do useParams,
   const { id } = useParams<'id'>()
@@ -27,7 +29,7 @@ export function Game({name, weekDays, useVoiceChannel, yearsPlaying, hourEnd, ho
   
   // Buscar o Ads pelo id do game
   useEffect(() => {
-      axios.get<IAdsProps[]>(`http://localhost:3333/games/${id}/ads`).then(response => {
+      axios.get<IAd[]>(`http://localhost:3333/games/${id}/ads`).then(response => {
           setAds(response.data)
       })
   }, [id]);
@@ -40,6 +42,14 @@ export function Game({name, weekDays, useVoiceChannel, yearsPlaying, hourEnd, ho
           <ArrowLeft className="w-7 h-7 text-white"/>
         </button>
       </header>
+
+      <Dialog.Root>
+        <main className="grid grid-cols-6 w-full gap-4">
+          {ads.map(ad => (
+            <Ad key={ad.id} ad={ad}/>
+            ))}
+        </main>
+      </Dialog.Root>
     </div>
   )
 }

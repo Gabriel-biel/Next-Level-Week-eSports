@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useMemo, useState } from "react"
-import { intToString } from "../utils/IntoToString"
+import { intToString } from "../utils/intToString"
 
 interface IGame {
   id: string

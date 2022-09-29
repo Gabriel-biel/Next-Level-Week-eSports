@@ -6,7 +6,7 @@ export function Routes() {
   return (
     <Switch>
       <Route path="/" element={<App/>}/>
-      <Route path='/games/:id' element={<Game/>} />
+      <Route path='/games/:id' element={<Game id={''} name={''} weekDays={[]} useVoiceChannel={false} yearsPlaying={0} hourStart={''} hourEnd={''}/>} />
     </Switch>
   )
 }
