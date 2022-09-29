@@ -4,6 +4,7 @@ import { ArrowLeft } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
 import { Ad } from "./components/Ad";
+import { DiscordModal } from "./components/DiscordModal";
 import { GameAdsHeader } from "./components/GameAdsHeader";
 
 export interface IAd {
@@ -29,13 +30,15 @@ export function Game() {
   
   // Buscar o Ads pelo id do game
   useEffect(() => {
-      axios.get<IAd[]>(`http://localhost:3333/games/${id}/ads`).then(response => {
-          setAds(response.data)
-      })
-  }, [id]);
+    async function loadAds() {
+      const response = await axios.get<IAd[]>(`http://localhost:3333/games/${id}/ads`)
+      setAds(response.data)
+    }
+    loadAds()
+    }, [id]);
   
   return (
-    <div className="w-[1344px] mx-auto flex flex-col items-center my-20 px-8 gap-12">
+    <div className="w-[1344px] mx-auto flex flex-col items-center my-6 px-4 gap-4">
       <header className="flex w-full justify-between items-start p-6 bg-zinc-900/50 rounded-lg">
         <GameAdsHeader id={String(id)} />
         <button onClick={() => navigate(-1)}>
@@ -44,9 +47,12 @@ export function Game() {
       </header>
 
       <Dialog.Root>
-        <main className="grid grid-cols-6 w-full gap-4">
+        <main className="grid grid-cols-5 w-full gap-4">
           {ads.map(ad => (
-            <Ad key={ad.id} ad={ad}/>
+            <>
+              <Ad key={ad.id} ad={ad}/>
+              <DiscordModal key={ad.id} id={ad.id}/>
+            </>
             ))}
         </main>
       </Dialog.Root>

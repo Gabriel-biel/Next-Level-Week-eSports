@@ -30,7 +30,7 @@ export function GameAdsHeader({ id }: IGameAdsHeaderProps) {
   const viewers = useMemo(() => {
     return intToString(game.viewers)
   }, [game.viewers])
-
+  
   const followers = useMemo(() => {
     return intToString(game.followers)
   }, [game.followers])
